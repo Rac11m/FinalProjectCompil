@@ -1,0 +1,15 @@
+#CALCUL
+#TAB
+#BOUCLE
+Program MonProgramme
+{
+INT I,N,B,A1; INT TAB[10];
+CHAR TAB2[5];
+CHAR C;
+STRING S;
+N = 10;
+B=4;
+A1=7;
+B=B*2+A1/3;
+S="chaine de caracteres"; 
+}

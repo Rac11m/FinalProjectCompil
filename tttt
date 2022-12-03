@@ -1,0 +1,52 @@
+/*
+PlsInst: Affectation PlsInst | Lecture PlsInst | Affichage PlsInst | Boucle PlsInst | Condition PlsInst |
+;
+Affectation: IDF Affect Resultat Pv
+;
+CONSTtype: CST_Int | CST_Double | CHAR | STR
+;
+Resultat: CONSTtype | ExpressArithm
+;
+ExpressArithm: Op Opr Op ExpressArithm
+;
+Op: CONSTtype | IDF 
+;
+Opr: Opr_Plus | Opr_Moins | Opr_Mul | Opr_Div
+;
+// commentaire //
+Lecture: Mc_READ Par_Ouv IDF Par_Fer Pv
+;
+
+Affichage: Mc_PRINT Par_Ouv ContenuAff Par_Fer 
+;
+ContenuAff: IDF | STR
+;
+
+Boucle: SignatureBoucle SautDeLigne Accolade_Ouv PlsInst SautDeLigne Accolade_Fer
+;
+
+SignatureBoucle: BoucleWhile | BoucleFor
+;
+BoucleWhile: Mc_WHILE Par_Ouv ConditionBloc Par_Fer
+;
+ConditionBloc: Op OprComparaison Op 
+;
+OprComparaison: Opr_Comp_Egalite | Opr_Comp_Inegalite | Opr_Comp_Inf | Opr_Comp_Sup | Opr_Comp_InfEgal | Opr_Comp_SupEgal
+;
+BoucleFor: Mc_FOR Par_Ouv InitFor Ps NmbrePas Ps CondArret Par_Fer
+;
+InitFor: IDF Affect CST_Int
+;
+NmbrePas: CST_Int|IDF
+;
+CondArret: CST_Int|IDF
+;
+Condition: Mc_IF Par_Ouv ConditionBloc SautDeLigne Accolade_Ouv PlsInst SautDeLigne Accolade_Fer
+;
+
+Commentaire: Slash_comment contenuCommentaire Slash_comment
+;
+contenuCommentaire: STR | SautDeLigne contenuCommentaire |
+;
+
+*/
