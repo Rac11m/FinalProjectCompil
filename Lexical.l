@@ -25,6 +25,7 @@ CST_Int [1-9][0-9]*|0
 CST_Double [0-9]+(\.[0-9]+)?|[1-9][0-9]*|0
 CHAR ['].[']
 STR ["].*["] 
+STR_Comm [//](.*|\n)*[//]
 Pv ;
 Crochet_Ouv \[    
 Crochet_Fer \]
@@ -64,10 +65,15 @@ SautDeLigne \n
 {Mc_CONST} {return Mc_CONST;}
 {Mc_IF} {return Mc_IF;}
 {IDF} {if(yyleng<=12){colonne+=yyleng;return IDF;} else{printf("le nom de la variable ne doit pas depasse 12 caracteres\n");}} 
-{CST_Int} {return CST_Int;}
+{CST_Int} {
+        if(atoi(yytext)<32767 && atoi(yytext)>-32768)
+        return CST_Int;
+        else return -1;
+        }
 {CST_Double} {return CST_Double;}
 {CHAR} {return CHAR;}
 {STR} {return STR;}
+{STR_Comm} {return STR_Comm;}
 {Pv} {return Pv;}
 {Crochet_Ouv} {return Crochet_Ouv;}
 {Crochet_Fer} {return Crochet_Fer;}

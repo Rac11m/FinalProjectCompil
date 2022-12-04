@@ -25,6 +25,7 @@ CST_Int
 CST_Double 
 CHAR 
 STR 
+STR_Comm
 Pv 
 Crochet_Ouv     
 Crochet_Fer 
@@ -32,7 +33,7 @@ Par_Ouv
 Par_Fer 
 Ps 
 Virgule 
-Guillemet 
+//Guillemet 
 Affect 
 Opr_Plus 
 Opr_Moins 
@@ -46,7 +47,7 @@ Opr_Comp_InfEgal
 Opr_Comp_SupEgal 
 Accolade_Ouv 
 Accolade_Fer 
-Slash_comment 
+//Slash_comment 
 SautDeLigne
 err
 
@@ -60,14 +61,12 @@ Incld: Mc_CALCUL SautDeLigne|Mc_BOUCLE SautDeLigne|Mc_TAB SautDeLigne
 ;
 DefProgram: Mc_PROGRAM IDF SautDeLigne Accolade_Ouv SautDeLigne CorpsProgram Accolade_Fer SautDeLigne
 ;
-CorpsProgram: PlsInst //PlsDec | 
+CorpsProgram: PlsDec CorpsProgram | PlsInst CorpsProgram | Commentaire CorpsProgram |  
 ;
 MultiLigne: SautDeLigne|
 ;
-/*
 PlsDec : Dec MultiLigne PlsDec|
 ;
-
 Dec: DecVar | DecConst | DecTab
 ;
 DecVar : Type ListeVars Pv
@@ -92,12 +91,9 @@ ConstString: IDF Affect STR Virgule | IDF Affect STR
 ;
 ListeTabs: IDF Crochet_Ouv CST_Int Crochet_Fer Virgule ListeTabs| IDF Crochet_Ouv CST_Int Crochet_Fer
 ;
-*/
-
-
-PlsInst: OprerationInst MultiLigne PlsInst | //| Boucle PlsInst | Condition PlsInst |
+PlsInst: OprerationInst MultiLigne PlsInst | Boucle PlsInst | Condition PlsInst |
 ;
-OprerationInst : Affectation | Lecture | Affichage //| Boucle | Condition
+OprerationInst : Affectation | Lecture | Affichage | Boucle | Condition
 ;
 Affectation: IDF Affect Resultat Pv
 ;
@@ -121,8 +117,8 @@ Affichage: Mc_PRINT Par_Ouv ContenuAff Par_Fer Pv
 ;
 ContenuAff: IDF | STR
 ;
-/*
-Boucle: SignatureBoucle SautDeLigne Accolade_Ouv PlsInst SautDeLigne Accolade_Fer
+
+Boucle: SignatureBoucle SautDeLigne Accolade_Ouv SautDeLigne PlsInst Accolade_Fer SautDeLigne
 ;
 
 SignatureBoucle: BoucleWhile | BoucleFor
@@ -141,15 +137,14 @@ NmbrePas: CST_Int|IDF
 ;
 CondArret: CST_Int|IDF
 ;
-Condition: Mc_IF Par_Ouv ConditionBloc SautDeLigne Accolade_Ouv PlsInst SautDeLigne Accolade_Fer
+Condition: Mc_IF Par_Ouv ConditionBloc Par_Fer SautDeLigne Accolade_Ouv SautDeLigne PlsInst Accolade_Fer SautDeLigne
 ;
 
-Commentaire: Slash_comment contenuCommentaire Slash_comment
+Commentaire: /*Slash_comment*/ contenuCommentaire /*Slash_comment*/ | /*/Slash_comment*/ contenuCommentaire /*Slash_comment*/ SautDeLigne
 ;
-contenuCommentaire: STR | SautDeLigne contenuCommentaire |
+contenuCommentaire: STR_Comm //| SautDeLigne contenuCommentaire |
 ;
 
-*/
 
 %%
 yyerror(){
