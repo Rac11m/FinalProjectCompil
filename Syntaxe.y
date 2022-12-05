@@ -33,7 +33,7 @@ Par_Ouv
 Par_Fer 
 Ps 
 Virgule 
-//Guillemet 
+Guillemet 
 Affect 
 Opr_Plus 
 Opr_Moins 
@@ -47,7 +47,7 @@ Opr_Comp_InfEgal
 Opr_Comp_SupEgal 
 Accolade_Ouv 
 Accolade_Fer 
-//Slash_comment 
+Slash_comment 
 SautDeLigne
 err
 
@@ -89,7 +89,11 @@ ConstChar: IDF Affect CHAR Virgule | IDF Affect CHAR
 ; 
 ConstString: IDF Affect STR Virgule | IDF Affect STR
 ;
-ListeTabs: IDF Crochet_Ouv CST_Int Crochet_Fer Virgule ListeTabs| IDF Crochet_Ouv CST_Int Crochet_Fer
+ListeTabs: Tableau Virgule ListeTabs| Tableau
+;
+Tableau: IDF Crochet_Ouv TailleTab Crochet_Fer
+; 
+TailleTab: CST_Int | IDF
 ;
 PlsInst: OprerationInst MultiLigne PlsInst | Boucle PlsInst | Condition PlsInst |
 ;
@@ -102,7 +106,7 @@ Resultat: CONSTtype | ExpressArithm
 CONSTtype: CST_Int | CST_Double | CHAR | STR
 ;
 
-ExpressArithm: Op Opr Op ExpressArithm |
+ExpressArithm: Op Opr Op
 ;
 Op: CONSTtype | IDF | ExpressArithm
 ;
@@ -110,14 +114,14 @@ Opr: Opr_Plus | Opr_Moins | Opr_Mul | Opr_Div
 ;
 
 // commentaire //
-Lecture: Mc_READ Par_Ouv IDF Par_Fer Pv
+Lecture: Mc_READ Par_Ouv ContenuLecture Par_Fer Pv
 ;
-
+ContenuLecture: IDF| Tableau
+;
 Affichage: Mc_PRINT Par_Ouv ContenuAff Par_Fer Pv
 ;
-ContenuAff: IDF | STR
+ContenuAff: IDF | STR| Tableau
 ;
-
 Boucle: SignatureBoucle SautDeLigne Accolade_Ouv SautDeLigne PlsInst Accolade_Fer SautDeLigne
 ;
 
@@ -135,7 +139,7 @@ InitFor: IDF Affect CST_Int
 ;
 NmbrePas: CST_Int|IDF
 ;
-CondArret: CST_Int|IDF
+CondArret: CST_Int|IDF| ExpressArithm
 ;
 Condition: Mc_IF Par_Ouv ConditionBloc Par_Fer SautDeLigne Accolade_Ouv SautDeLigne PlsInst Accolade_Fer SautDeLigne
 ;
